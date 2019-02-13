@@ -7,7 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 
+import org.hibernate.Session;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,20 +145,18 @@ public class ProductdataApplicationTests {
 		repository.findAll(pageable).forEach(p->System.out.println(p.getName()));
 	}
 	
-//	@Test
-//	@Transactional
-//	public void testCaching() {
-//		Session session = entityManager.unwrap(Session.class);
-//		Product product = repository.findById(1).get();
-//		
-//		repository.findById(1).get();
-//		
-//		session.evict(product);
-//		
-//		repository.findById(1).get();
-//		
-//	}
-//	
+	@Test
+	@Transactional
+	public void testCaching() {
+		Session session = entityManager.unwrap(Session.class);
+		Product product = repository.findById(1).get();
+		
+		repository.findById(1).get();
+		
+		session.evict(product);
+		
+		repository.findById(1).get();
+	}
 
 }
 
